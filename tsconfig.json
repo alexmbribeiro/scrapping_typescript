@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/scrappy-e2e"
+    },
+    {
+      "path": "./apps/scrappy"
+    },
+    {
+      "path": "./shared-utils"
+    }
+  ]
+}

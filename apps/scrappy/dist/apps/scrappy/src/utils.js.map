@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../src/utils.ts"],
+  "sourcesContent": ["export const getId = (url: string): string | null => {\n    const regex = /instagram\\.com\\/(?:[A-Za-z0-9_.]+\\/)?(p|reels|reel|stories)\\/([A-Za-z0-9-_]+)/;\n    const match = url.match(regex);\n    return match && match[2] ? match[2] : null;\n  };\n  "],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAO,MAAM,QAAQ,CAAC,QAA+B;AACjD,QAAM,QAAQ;AACd,QAAM,QAAQ,IAAI,MAAM,KAAK;AAC7B,SAAO,SAAS,MAAM,CAAC,IAAI,MAAM,CAAC,IAAI;AACxC;",
+  "names": []
+}
