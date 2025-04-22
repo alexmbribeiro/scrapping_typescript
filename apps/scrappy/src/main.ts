@@ -1,43 +1,37 @@
-import puppeteer from 'puppeteer-core';
-import { executablePath } from 'puppeteer';
-import { getInstagramGraphqlData } from './fetchGraphql';
+import { instagramFetch } from "./controller/instagramFetchController"
+import express, { Request, Response } from 'express';
+import cors from 'cors';
 
-async function run() {
-  const browser = await puppeteer.launch({
-    executablePath: executablePath(),
-    headless: true,
-    args: ['--no-sandbox'],
-  });
+const app = express();
 
-  const page = await browser.newPage();
-  const base_url = "https://www.instagram.com/"
-  const user = "cristiano"
+app.use(express.json());
+
+// Allow requests from localhost:???
+app.use(cors({
+  origin: 'localhost:???'
+}));
 
 
-  await page.goto(base_url + user, { waitUntil: 'networkidle2' });
 
-  // Wait for the post thumbnails to load
-  await page.waitForSelector('article a', { timeout: 10000 });
+app.post('/instagram', async (req: Request, res: Response): Promise<void> => {
+  const { username } = req.body;
 
-  // Grab the first post link (the most recent post)
-  const postUrl = await page.$$eval('article a', anchors => {
-    const href = anchors[0]?.getAttribute('href');
-    return href ? `https://www.instagram.com${href}` : null;
-  });
+  console.log(username)
 
-  if (!postUrl) {
-    console.error("Could not find any post URL");
-    await browser.close();
+  if (!username) {
+    res.status(400).json({ error: 'Username is required in the body' });
     return;
   }
 
-  console.log("Most recent post URL:", postUrl);
+  try {
+    const data = await instagramFetch(username);
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch Instagram data' });
+  }
+});
 
-  // Call your GraphQL data fetcher
-  const postData = await getInstagramGraphqlData(postUrl);
-  console.log("GraphQL post data:", postData);
 
-  await browser.close();
-}
 
-run();
+app.listen(3000, () => console.log('API running on http://localhost:3000'));
