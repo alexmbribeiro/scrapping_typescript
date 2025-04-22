@@ -1,7 +1,7 @@
 import { instagramFetch } from "./controller/instagramFetchController"
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { instagramFetchWithLogin } from "./controller/instagramFetchControllerWithLogin";
+import { instagramFetchWithLogin } from "./controller/instagramFetchWithLoginController";
 
 const app = express();
 
